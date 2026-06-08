@@ -1691,13 +1691,16 @@ function renderQ() {
   let badgeMap = {regole:'🔴 Regole', scoring:'🔵 Punteggio', etichetta:'🟢 Etichetta', campo:'🟡 Campo'};
 
   container.innerHTML = header + `
-    <div class="question-card">
+    <div class="question-card" data-audio-title="Domanda quiz ${current + 1}">
+      <button class="listen-card" type="button">▶ Play</button>
       <div class="question-num">${badgeMap[q.cat] || q.cat}</div>
       <div class="question-text">${q.q}</div>
       <div class="options">${opts}</div>
       ${exp}
     </div>
   `;
+
+  initAudioNotes();
 
   // Nav buttons
   const prev = document.getElementById('btn-prev');
@@ -1788,8 +1791,8 @@ function filterGlossary() {
 
 
 
-/* ===================== AUDIO SEMPLICE / GOOGLE ITALIANO ===================== */
-let audioRate = 0.72;
+/* ===================== AUDIO SEMPLICE / GOOGLE ITALIANO — VERSIONE ORDINATA ===================== */
+let audioRate = 0.68;
 let audioPitch = 0.96;
 let currentUtterance = null;
 let availableVoices = [];
@@ -1798,10 +1801,12 @@ let currentAudioKey = '';
 let currentAudioText = '';
 let currentAudioLabel = '';
 let audioVisibilityListenerAdded = false;
+let audioKeepAliveTimer = null;
+let audioReady = false;
 
 function cleanTextForAudio(text) {
-  return text
-    .replace(/[⛳📚📋🏌️🤝📖🎯🏆✅🔑⚠️💡🔴🟡⬜🔵⬛🟢⏱️🔍🏖️👣🤫🏳️👔📵🌿🔧🚗🗣️▶⏸■]/g, ' ')
+  return (text || '')
+    .replace(/[⛳📚📋🏌️🤝📖🎯🏆✅🔑⚠️💡🔴🟡⬜🔵⬛🟢⏱️🔍🏖️👣🤫🏳️👔📵🌿🔧🚗🗣️▶⏸■✓←→]/g, ' ')
     .replace(/\bOB\b/g, 'fuori limite')
     .replace(/\bGUR\b/g, 'ground under repair')
     .replace(/\bWHS\b/g, 'World Handicap System')
@@ -1821,7 +1826,7 @@ function cleanTextForAudio(text) {
 function getReadableTextFromElement(el) {
   if (!el) return '';
   const clone = el.cloneNode(true);
-  clone.querySelectorAll('button, nav, .audio-mini, .listen-card, script, style, .cat-filter, .quiz-nav').forEach(n => n.remove());
+  clone.querySelectorAll('button, nav, .audio-mini, .listen-card, script, style, .cat-filter, .quiz-nav, input, a.video-link').forEach(n => n.remove());
   return cleanTextForAudio(clone.innerText || clone.textContent || '');
 }
 
@@ -1838,15 +1843,15 @@ function updateAudioButtons(state) {
   });
 }
 
-function loadVoices() {
+function refreshVoices() {
   if (!('speechSynthesis' in window)) return [];
   availableVoices = window.speechSynthesis.getVoices() || [];
-  const best = chooseGoogleItalianVoice();
+  const best = chooseItalianVoice();
   selectedVoiceURI = best ? best.voiceURI : '';
   return availableVoices;
 }
 
-function chooseGoogleItalianVoice() {
+function chooseItalianVoice() {
   const italian = availableVoices.filter(v => (v.lang || '').toLowerCase().startsWith('it'));
   if (!italian.length) return null;
   const googleIt = italian.find(v => (v.name || '').toLowerCase().includes('google') && (v.lang || '').toLowerCase() === 'it-it')
@@ -1855,8 +1860,30 @@ function chooseGoogleItalianVoice() {
 }
 
 function getSelectedVoice() {
-  if (!availableVoices.length) loadVoices();
-  return availableVoices.find(v => v.voiceURI === selectedVoiceURI) || chooseGoogleItalianVoice();
+  if (!availableVoices.length) refreshVoices();
+  return availableVoices.find(v => v.voiceURI === selectedVoiceURI) || chooseItalianVoice();
+}
+
+function warmUpAudioEngine() {
+  if (!('speechSynthesis' in window) || audioReady) return;
+  refreshVoices();
+  audioReady = true;
+}
+
+function startKeepAlive() {
+  stopKeepAlive();
+  if (!('speechSynthesis' in window)) return;
+  audioKeepAliveTimer = setInterval(() => {
+    if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+      window.speechSynthesis.pause();
+      window.speechSynthesis.resume();
+    }
+  }, 14000);
+}
+
+function stopKeepAlive() {
+  if (audioKeepAliveTimer) clearInterval(audioKeepAliveTimer);
+  audioKeepAliveTimer = null;
 }
 
 function speakText(text, label = 'testo', key = '') {
@@ -1864,14 +1891,17 @@ function speakText(text, label = 'testo', key = '') {
     setAudioStatus('Lettura vocale non supportata. Prova Chrome o Safari.');
     return;
   }
+
+  warmUpAudioEngine();
   const cleaned = cleanTextForAudio(text);
   if (!cleaned) {
     setAudioStatus('Nessun testo da leggere.');
+    updateAudioButtons('idle');
     return;
   }
 
-  loadVoices();
   window.speechSynthesis.cancel();
+  stopKeepAlive();
 
   currentAudioText = cleaned;
   currentAudioLabel = label;
@@ -1883,27 +1913,40 @@ function speakText(text, label = 'testo', key = '') {
   currentUtterance.rate = audioRate;
   currentUtterance.pitch = audioPitch;
   currentUtterance.volume = 1;
+
   currentUtterance.onstart = () => {
-    setAudioStatus('In lettura: ' + label);
+    const voiceName = voice && voice.name ? ' — ' + voice.name : '';
+    setAudioStatus('In lettura: ' + label + voiceName);
     updateAudioButtons('playing');
+    startKeepAlive();
   };
   currentUtterance.onend = () => {
+    stopKeepAlive();
     setAudioStatus('Lettura completata.');
     updateAudioButtons('idle');
+    currentAudioKey = '';
   };
   currentUtterance.onerror = () => {
+    stopKeepAlive();
     setAudioStatus('Lettura interrotta. Premi Play.');
     updateAudioButtons('idle');
   };
-  window.speechSynthesis.speak(currentUtterance);
+
+  // Piccolo ritardo: su diversi telefoni evita il mancato avvio al primo tap.
+  setTimeout(() => window.speechSynthesis.speak(currentUtterance), 60);
 }
 
 function toggleAudio(text, label = 'testo', key = '') {
-  if (!('speechSynthesis' in window)) return;
+  if (!('speechSynthesis' in window)) {
+    setAudioStatus('Lettura vocale non supportata.');
+    return;
+  }
+  warmUpAudioEngine();
   const effectiveKey = key || label;
 
   if (window.speechSynthesis.speaking && !window.speechSynthesis.paused && currentAudioKey === effectiveKey) {
     window.speechSynthesis.pause();
+    stopKeepAlive();
     setAudioStatus('In pausa.');
     updateAudioButtons('paused');
     return;
@@ -1913,6 +1956,7 @@ function toggleAudio(text, label = 'testo', key = '') {
     window.speechSynthesis.resume();
     setAudioStatus('Ripresa: ' + currentAudioLabel);
     updateAudioButtons('playing');
+    startKeepAlive();
     return;
   }
 
@@ -1928,6 +1972,7 @@ function toggleCurrentSectionAudio() {
 
 function stopAudio() {
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  stopKeepAlive();
   updateAudioButtons('idle');
 }
 
@@ -1936,34 +1981,60 @@ function buildAudioMini() {
     <div class="audio-mini" data-no-audio="true">
       <div class="audio-mini-text">
         <div class="audio-mini-title">Audio</div>
-        <div class="audio-status" aria-live="polite">Voce Google italiana, lenta.</div>
+        <div class="audio-status" aria-live="polite">Voce italiana lenta. Google se disponibile.</div>
       </div>
-      <button class="audio-toggle" type="button" onclick="toggleCurrentSectionAudio()">▶ Play</button>
+      <button class="audio-toggle" type="button">▶ Play</button>
     </div>`;
+}
+
+function getAudioTargetFromButton(btn) {
+  if (btn.classList.contains('audio-toggle')) {
+    const active = document.querySelector('.section.active');
+    const title = active ? (active.querySelector('.section-intro')?.textContent || 'sezione') : 'sezione';
+    return { el: active, label: title, key: active ? 'section-' + active.id : 'section' };
+  }
+  const block = btn.closest('.card, .question-card, .section');
+  const title = block?.dataset?.audioTitle
+    || block?.querySelector('h2')?.textContent?.trim()
+    || block?.querySelector('.question-num')?.textContent?.trim()
+    || 'scheda';
+  let index = Array.from(document.querySelectorAll('.card, .question-card')).indexOf(block);
+  if (index < 0) index = 0;
+  return { el: block, label: title, key: 'block-' + index + '-' + title };
+}
+
+function handleAudioButtonClick(event) {
+  const btn = event.target.closest('.audio-toggle, .listen-card');
+  if (!btn) return;
+  event.preventDefault();
+  warmUpAudioEngine();
+  const target = getAudioTargetFromButton(btn);
+  toggleAudio(getReadableTextFromElement(target.el), target.label, target.key);
 }
 
 function initAudioNotes() {
   document.querySelectorAll('.audio-panel').forEach(el => el.remove());
   document.querySelectorAll('.section').forEach(section => {
-    if (!section.querySelector('.audio-mini')) {
+    if (!section.querySelector(':scope > .audio-mini')) {
       section.insertAdjacentHTML('afterbegin', buildAudioMini());
     }
   });
-  document.querySelectorAll('.card').forEach((card, idx) => {
-    if (!card.querySelector('.listen-card')) {
-      const title = card.querySelector('h2')?.textContent?.trim() || `Scheda ${idx + 1}`;
-      const safeTitle = title.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-      card.insertAdjacentHTML('afterbegin', `<button class="listen-card" type="button" onclick="toggleAudio(getReadableTextFromElement(this.closest('.card')), '${safeTitle}', 'card-${idx}')">▶ Play</button>`);
+  document.querySelectorAll('.card').forEach(card => {
+    if (!card.querySelector(':scope > .listen-card')) {
+      card.insertAdjacentHTML('afterbegin', `<button class="listen-card" type="button">▶ Play</button>`);
     }
   });
-  loadVoices();
+  refreshVoices();
   if ('speechSynthesis' in window) {
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-    setTimeout(loadVoices, 300);
-    setTimeout(loadVoices, 1000);
+    window.speechSynthesis.onvoiceschanged = refreshVoices;
+    setTimeout(refreshVoices, 300);
+    setTimeout(refreshVoices, 1000);
+    setTimeout(refreshVoices, 2000);
   }
   if (!audioVisibilityListenerAdded) {
     audioVisibilityListenerAdded = true;
+    document.addEventListener('click', handleAudioButtonClick);
+    document.addEventListener('touchend', warmUpAudioEngine, { passive: true });
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
         setAudioStatus('Nota: alcuni telefoni possono sospendere l’audio con schermo bloccato.');
