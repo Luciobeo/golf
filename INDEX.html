@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1a3a2a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Golf Green Card — Preparazione Esame</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-light: #52b788;
+    --green-pale: #b7e4c7;
+    --cream: #f5f0e8;
+    --sand: #e9dfc8;
+    --gold: #c9a84c;
+    --text: #1a2818;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 24px 20px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: -40px; right: -40px; bottom: -40px;
+    background: radial-gradient(ellipse at 30% 50%, rgba(82,183,136,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+  header h1 span { color: var(--green-light); }
+  header p {
+    font-size: 13px;
+    color: var(--green-pale);
+    margin-top: 6px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  /* NAV TABS */
+  nav {
+    background: var(--green-deep);
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-top: 1px solid rgba(82,183,136,0.2);
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav button {
+    flex: 0 0 auto;
+    padding: 12px 18px;
+    background: none;
+    border: none;
+    color: var(--green-pale);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    text-transform: uppercase;
+  }
+  nav button.active {
+    color: var(--green-light);
+    border-bottom-color: var(--green-light);
+  }
+  nav button:hover { color: var(--white); }
+
+  /* MAIN CONTENT */
+  .content { max-width: 680px; margin: 0 auto; padding: 20px 16px 80px; }
+
+  /* SECTION CARDS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(26,58,42,0.08);
+    border-left: 4px solid var(--green-light);
+  }
+  .card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--green-deep);
+    margin-bottom: 12px;
+  }
+  .card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green-mid);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 16px 0 8px;
+  }
+  .card p, .card li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #3a4a3a;
+  }
+  .card ul, .card ol {
+    padding-left: 18px;
+    margin-top: 6px;
+  }
+  .card li { margin-bottom: 4px; }
+
+  .highlight-box {
+    background: var(--green-pale);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    border-left: 3px solid var(--green-mid);
+  }
+  .highlight-box p { font-size: 13px; color: var(--green-deep); font-weight: 500; }
+
+  .penalty-box {
+    background: #fff3e0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    border-left: 3px solid var(--gold);
+  }
+  .penalty-box p { font-size: 13px; color: #6b4c00; }
+
+  .badge {
+    display: inline-block;
+    background: var(--green-deep);
+    color: var(--cream);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+  }
+  .badge.gold { background: var(--gold); color: var(--green-deep); }
+  .badge.red { background: #c0392b; }
+
+  /* QUIZ */
+  .quiz-header {
+    background: var(--green-deep);
+    color: var(--cream);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .quiz-header .score-label {
+    font-size: 12px;
+    color: var(--green-pale);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .quiz-header .score-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--green-light);
+  }
+  .progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green-light);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .question-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(26,58,42,0.08);
+  }
+  .question-num {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--green-mid);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--green-deep);
+    margin-bottom: 18px;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    background: var(--cream);
+    border: 2px solid var(--sand);
+    border-radius: 8px;
+    padding: 13px 16px;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not([disabled]) {
+    border-color: var(--green-light);
+    background: #f0faf4;
+  }
+  .option-btn.correct {
+    background: #e8f5e9;
+    border-color: var(--green-mid);
+    color: var(--green-deep);
+    font-weight: 600;
+  }
+  .option-btn.wrong {
+    background: #fdecea;
+    border-color: #c0392b;
+    color: #7b1a1a;
+  }
+  .option-btn[disabled] { cursor: default; }
+
+  .explanation {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: var(--green-pale);
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--green-deep);
+    display: none;
+  }
+  .explanation.show { display: block; }
+  .explanation strong { color: var(--green-deep); }
+
+  .quiz-nav {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--green-deep);
+    color: var(--cream);
+  }
+  .btn-primary:hover { background: var(--green-mid); }
+  .btn-secondary {
+    background: var(--sand);
+    color: var(--text);
+  }
+  .btn-secondary:hover { background: #d9ceba; }
+
+  .result-card {
+    background: var(--green-deep);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 30px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .result-card .big-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    color: var(--green-light);
+    line-height: 1;
+  }
+  .result-card .result-msg {
+    font-size: 16px;
+    margin-top: 10px;
+    color: var(--green-pale);
+  }
+  .result-card .result-detail {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+  }
+
+  /* ETICHETTA ICONS */
+  .etiquette-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--sand);
+  }
+  .etiquette-item:last-child { border-bottom: none; }
+  .etiq-icon {
+    font-size: 24px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .etiq-text strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green-deep);
+    margin-bottom: 4px;
+  }
+  .etiq-text span { font-size: 13px; color: #555; line-height: 1.5; }
+
+  /* GLOSSARIO */
+  .glossary-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--sand);
+  }
+  .glossary-item:last-child { border-bottom: none; }
+  .glossary-term {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--green-deep);
+    font-weight: 700;
+  }
+  .glossary-def {
+    font-size: 13px;
+    color: #555;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* SCORING TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+  th {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 500;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--sand);
+    color: var(--text);
+  }
+  tr:nth-child(even) td { background: #f9f6f0; }
+  tr:hover td { background: var(--green-pale); }
+
+  .section-intro {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--green-deep);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .section-sub {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  /* Category filter for quiz */
+  .cat-filter {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .cat-btn {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 2px solid var(--green-mid);
+    background: none;
+    color: var(--green-mid);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .cat-btn.active, .cat-btn:hover {
+    background: var(--green-mid);
+    color: var(--white);
+  }
+
+
+  /* ===================== PREMIUM RESTYLE ===================== */
+  :root{
+    --ink:#102015;
+    --muted:#6b7568;
+    --glass:rgba(255,255,255,.72);
+    --shadow-lg:0 24px 70px rgba(16,32,21,.18);
+    --shadow-md:0 12px 34px rgba(16,32,21,.12);
+    --radius-lg:26px;
+    --radius-md:18px;
+  }
+  body{
+    background:
+      radial-gradient(circle at top left, rgba(82,183,136,.24), transparent 34vw),
+      radial-gradient(circle at 100% 14%, rgba(201,168,76,.22), transparent 28vw),
+      linear-gradient(180deg, #f8f3e8 0%, #eef5ec 46%, #f5f0e8 100%);
+  }
+  header{
+    min-height: 360px;
+    padding: 34px 20px 42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:left;
+    background:
+      linear-gradient(115deg, rgba(12,35,24,.92), rgba(28,74,48,.76)),
+      url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=1800&q=80') center/cover;
+  }
+  header::before{
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,255,255,.14), transparent 22%),
+      linear-gradient(135deg, rgba(201,168,76,.18), transparent 45%);
+  }
+  .hero-inner{
+    width:min(1040px,100%);
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns: 1.3fr .7fr;
+    gap:24px;
+    align-items:end;
+  }
+  .hero-kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#173322;
+    background:rgba(245,240,232,.9);
+    border:1px solid rgba(255,255,255,.45);
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+    margin-bottom:18px;
+  }
+  header h1{
+    font-size: clamp(38px, 6vw, 74px);
+    color:#fffdf8;
+    max-width:760px;
+    letter-spacing:-1.8px;
+  }
+  header h1 span{ color:#d7bd62; }
+  header p{
+    max-width:650px;
+    font-size:16px;
+    line-height:1.65;
+    color:rgba(245,240,232,.86);
+    margin-top:16px;
+  }
+  .hero-panel{
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.22);
+    backdrop-filter: blur(14px);
+    border-radius:var(--radius-lg);
+    padding:20px;
+    box-shadow:var(--shadow-lg);
+  }
+  .hero-panel strong{
+    display:block;
+    color:#fff;
+    font-family:'Playfair Display',serif;
+    font-size:22px;
+    margin-bottom:12px;
+  }
+  .hero-list{display:grid; gap:10px;}
+  .hero-list span{
+    color:rgba(255,255,255,.88);
+    font-size:13px;
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  nav{
+    position:sticky;
+    top:0;
+    z-index:20;
+    justify-content:center;
+    background:rgba(26,58,42,.92);
+    backdrop-filter: blur(12px);
+    box-shadow:0 10px 24px rgba(16,32,21,.12);
+  }
+  nav button{padding:16px 18px; border-bottom-width:3px;}
+  .content{max-width:1040px; padding:28px 18px 96px;}
+  .section-intro{font-size:clamp(27px,4vw,42px); letter-spacing:-.6px;}
+  .section-sub{font-size:15px; color:var(--muted);}
+  .dashboard{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin:22px 0 20px;
+  }
+  .dash-card{
+    background:rgba(255,255,255,.82);
+    border:1px solid rgba(26,58,42,.08);
+    border-radius:20px;
+    padding:18px;
+    box-shadow:var(--shadow-md);
+  }
+  .dash-card .num{
+    font-family:'Playfair Display',serif;
+    font-size:32px;
+    color:var(--green-deep);
+    line-height:1;
+  }
+  .dash-card .label{
+    display:block;
+    margin-top:8px;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+    color:var(--muted);
+    font-weight:700;
+  }
+  .card, .question-card{
+    border:1px solid rgba(26,58,42,.08);
+    border-left:none;
+    border-radius:var(--radius-md);
+    box-shadow:var(--shadow-md);
+    overflow:hidden;
+    position:relative;
+  }
+  .card::before{
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height:5px;
+    background:linear-gradient(90deg,var(--green-mid),var(--green-light),var(--gold));
+  }
+  .card h2{font-size:24px; letter-spacing:-.2px;}
+  .highlight-box, .penalty-box{border-radius:14px;}
+  .topic-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin:16px 0 22px;
+  }
+  .topic-tile{
+    min-height:160px;
+    color:#fff;
+    border-radius:24px;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    box-shadow:var(--shadow-md);
+    background:linear-gradient(145deg,rgba(17,54,35,.88),rgba(45,106,79,.68)), center/cover;
+    overflow:hidden;
+    position:relative;
+  }
+  .topic-tile:nth-child(1){background-image:linear-gradient(145deg,rgba(17,54,35,.88),rgba(45,106,79,.58)), url('https://images.unsplash.com/photo-1592919505780-303950717480?auto=format&fit=crop&w=900&q=80');}
+  .topic-tile:nth-child(2){background-image:linear-gradient(145deg,rgba(17,54,35,.88),rgba(45,106,79,.58)), url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=900&q=80');}
+  .topic-tile:nth-child(3){background-image:linear-gradient(145deg,rgba(17,54,35,.88),rgba(45,106,79,.58)), url('https://images.unsplash.com/photo-1622396636133-ba43f812bc35?auto=format&fit=crop&w=900&q=80');}
+  .topic-tile strong{font-family:'Playfair Display',serif;font-size:22px;line-height:1.05;}
+  .topic-tile span{font-size:13px;color:rgba(255,255,255,.82);margin-top:8px;line-height:1.45;}
+  .video-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+  }
+  .video-card{
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:var(--shadow-md);
+    border:1px solid rgba(26,58,42,.09);
+  }
+  .video-thumb{
+    min-height:150px;
+    background:
+      linear-gradient(135deg, rgba(26,58,42,.88), rgba(82,183,136,.55)),
+      url('https://images.unsplash.com/photo-1624454002302-36b824d7bd0d?auto=format&fit=crop&w=900&q=80') center/cover;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:48px;
+  }
+  .video-card:nth-child(2) .video-thumb{background-image:linear-gradient(135deg, rgba(26,58,42,.88), rgba(82,183,136,.55)), url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=900&q=80');}
+  .video-card:nth-child(3) .video-thumb{background-image:linear-gradient(135deg, rgba(26,58,42,.88), rgba(82,183,136,.55)), url('https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?auto=format&fit=crop&w=900&q=80');}
+  .video-card:nth-child(4) .video-thumb{background-image:linear-gradient(135deg, rgba(26,58,42,.88), rgba(82,183,136,.55)), url('https://images.unsplash.com/photo-1591491653056-83d60c1879c1?auto=format&fit=crop&w=900&q=80');}
+  .video-body{padding:18px;}
+  .video-body h2{font-family:'Playfair Display',serif; color:var(--green-deep); font-size:22px; margin-bottom:8px;}
+  .video-body p{font-size:14px; color:#4a5848; line-height:1.55; margin-bottom:14px;}
+  .video-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    background:var(--green-deep);
+    color:var(--cream);
+    padding:11px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+  }
+  .video-link:hover{background:var(--green-mid);}
+  .search-box{
+    width:100%;
+    border:2px solid rgba(45,106,79,.18);
+    border-radius:999px;
+    padding:14px 18px;
+    font-family:'DM Sans',sans-serif;
+    margin:0 0 16px;
+    font-size:14px;
+    outline:none;
+    background:#fff;
+    box-shadow:0 6px 18px rgba(16,32,21,.06);
+  }
+  .search-box:focus{border-color:var(--green-light);}
+  .quiz-header{border-radius:24px; box-shadow:var(--shadow-md); position:relative; overflow:hidden;}
+  .option-btn{border-radius:14px;}
+  .btn{border-radius:14px;}
+  @media (max-width:780px){
+    header{min-height:420px; text-align:left; align-items:flex-end;}
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-panel{display:none;}
+    nav{justify-content:flex-start;}
+    .dashboard{grid-template-columns:repeat(2,1fr);}
+    .topic-grid,.video-grid{grid-template-columns:1fr;}
+    .content{padding-top:22px;}
+  }
+
+
+  /* ===================== MOBILE APP OPTIMIZATION ===================== */
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%;}
+  button, a, input{touch-action:manipulation;}
+  button{-webkit-tap-highlight-color:rgba(82,183,136,.22);}
+  @supports (padding: max(0px)){
+    body{padding-left:env(safe-area-inset-left); padding-right:env(safe-area-inset-right);}
+  }
+
+  @media (max-width:640px){
+    body{
+      background:linear-gradient(180deg,#f7f1e6 0%,#eef5ec 52%,#f7f1e6 100%);
+      overflow-x:hidden;
+    }
+    header{
+      min-height:275px;
+      padding:72px 18px 24px;
+      align-items:flex-end;
+      background-position:center top;
+    }
+    .hero-kicker{
+      font-size:10px;
+      padding:7px 10px;
+      margin-bottom:12px;
+    }
+    header h1{
+      font-size:38px;
+      letter-spacing:-1px;
+      line-height:.98;
+    }
+    header p{
+      font-size:13.5px;
+      line-height:1.5;
+      margin-top:12px;
+      max-width:94%;
+    }
+
+    nav{
+      position:fixed;
+      left:10px;
+      right:10px;
+      top:auto;
+      bottom:calc(10px + env(safe-area-inset-bottom));
+      z-index:100;
+      justify-content:flex-start;
+      gap:6px;
+      padding:8px;
+      border-radius:24px;
+      background:rgba(18,48,33,.94);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 16px 46px rgba(16,32,21,.28);
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      scroll-snap-type:x mandatory;
+    }
+    nav button{
+      min-width:76px;
+      min-height:56px;
+      padding:8px 10px;
+      border-radius:17px;
+      border-bottom:none;
+      color:rgba(245,240,232,.78);
+      font-size:11px;
+      line-height:1.15;
+      letter-spacing:0;
+      text-transform:none;
+      scroll-snap-align:center;
+      white-space:normal;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+    nav button.active{
+      background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.08));
+      color:#fffdf8;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+
+    .content{
+      width:100%;
+      padding:18px 12px calc(112px + env(safe-area-inset-bottom));
+    }
+    .section-intro{
+      font-size:30px;
+      line-height:1.05;
+      margin-top:2px;
+    }
+    .section-sub{
+      font-size:13.5px;
+      margin-bottom:14px;
+    }
+    .dashboard{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(118px, 1fr));
+      gap:10px;
+      overflow-x:auto;
+      padding:2px 2px 12px;
+      margin:14px -2px 10px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+    }
+    .dash-card{
+      min-width:118px;
+      padding:14px;
+      border-radius:18px;
+      scroll-snap-align:start;
+    }
+    .dash-card .num{font-size:29px;}
+    .dash-card .label{font-size:10.5px; line-height:1.25;}
+
+    .topic-grid{
+      display:flex;
+      gap:12px;
+      overflow-x:auto;
+      padding:0 2px 12px;
+      margin:10px -2px 14px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+    }
+    .topic-tile{
+      min-width:238px;
+      min-height:142px;
+      border-radius:22px;
+      scroll-snap-align:start;
+    }
+
+    .card,.question-card,.video-card,.result-card{
+      border-radius:20px;
+      margin-bottom:13px;
+      box-shadow:0 10px 26px rgba(16,32,21,.10);
+    }
+    .card{padding:18px 16px;}
+    .card h2{font-size:22px; line-height:1.1;}
+    .card h3{font-size:12px; margin:14px 0 7px;}
+    .card p,.card li{font-size:14.5px; line-height:1.62;}
+    .card ul,.card ol{padding-left:17px;}
+    .highlight-box,.penalty-box{padding:12px 13px;}
+
+    table{
+      display:block;
+      overflow-x:auto;
+      white-space:nowrap;
+      border-radius:14px;
+      -webkit-overflow-scrolling:touch;
+    }
+    th,td{padding:10px 11px;}
+
+    .video-grid{gap:13px;}
+    .video-thumb{min-height:122px; font-size:40px;}
+    .video-body{padding:15px;}
+    .video-body h2{font-size:20px;}
+    .video-link{
+      display:flex;
+      justify-content:center;
+      width:100%;
+      padding:13px 14px;
+      font-size:13px;
+    }
+
+    .search-box{
+      border-radius:18px;
+      padding:15px 15px;
+      font-size:16px;
+      margin-bottom:12px;
+    }
+    .glossary-item{padding:14px 0;}
+    .glossary-term{font-size:17px;}
+    .glossary-def{font-size:13.5px;}
+
+    .etiquette-item{gap:11px; padding:13px 0;}
+    .etiq-icon{font-size:22px;}
+    .etiq-text strong{font-size:14.5px;}
+    .etiq-text span{font-size:13.5px;}
+
+    .cat-filter{
+      display:flex;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      gap:8px;
+      padding-bottom:8px;
+      margin-bottom:12px;
+      -webkit-overflow-scrolling:touch;
+    }
+    .cat-btn{
+      flex:0 0 auto;
+      padding:10px 14px;
+      font-size:11px;
+    }
+    .quiz-header{
+      padding:17px;
+      border-radius:22px;
+      margin-bottom:13px;
+    }
+    .quiz-header .score-label{font-size:10px;}
+    .quiz-header .score-val{font-size:29px;}
+    .question-card{padding:18px 15px;}
+    .question-num{font-size:10.5px;}
+    .question-text{font-size:18px; line-height:1.35; margin-bottom:15px;}
+    .options{gap:9px;}
+    .option-btn{
+      min-height:54px;
+      padding:14px 14px;
+      font-size:15px;
+      border-radius:15px;
+    }
+    .explanation{
+      font-size:13.5px;
+      line-height:1.55;
+      padding:13px;
+    }
+    .quiz-nav{
+      position:sticky;
+      bottom:calc(88px + env(safe-area-inset-bottom));
+      z-index:50;
+      background:rgba(247,241,230,.84);
+      backdrop-filter:blur(10px);
+      padding:8px;
+      border-radius:18px;
+      box-shadow:0 10px 28px rgba(16,32,21,.12);
+    }
+    .btn{
+      min-height:52px;
+      font-size:15px;
+      border-radius:16px;
+      padding:13px;
+    }
+    .result-card{padding:28px 16px;}
+    .result-card .big-score{font-size:58px;}
+  }
+
+  @media (max-width:380px){
+    header h1{font-size:34px;}
+    nav button{min-width:70px; font-size:10.5px;}
+    .section-intro{font-size:27px;}
+    .card{padding:16px 14px;}
+    .question-text{font-size:17px;}
+  }
+
+
+
+  /* AUDIO CONTROLS — VERSIONE SEMPLIFICATA */
+  .audio-mini {
+    background: rgba(255,255,255,0.86);
+    border: 1px solid rgba(26,58,42,0.10);
+    border-radius: 16px;
+    padding: 10px 12px;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow: 0 6px 18px rgba(26,58,42,0.08);
+  }
+  .audio-mini-text {
+    min-width: 0;
+  }
+  .audio-mini-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--green-deep);
+    line-height: 1.2;
+  }
+  .audio-status {
+    font-size: 11px;
+    color: #667266;
+    line-height: 1.25;
+    margin-top: 2px;
+    min-height: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
+  }
+  .audio-toggle,
+  .listen-card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--green-deep);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 10px 14px;
+    min-height: 42px;
+    min-width: 92px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(26,58,42,0.16);
+    touch-action: manipulation;
+  }
+  .listen-card {
+    margin-bottom: 12px;
+    min-width: auto;
+    font-size: 12px;
+    padding: 8px 12px;
+    min-height: 38px;
+    background: var(--green-mid);
+  }
+  .audio-toggle.paused,
+  .listen-card.paused {
+    background: var(--gold);
+    color: var(--green-deep);
+  }
+  @media (max-width: 480px) {
+    .audio-mini { border-radius: 14px; padding: 9px 10px; }
+    .audio-status { max-width: 145px; }
+    .audio-toggle { min-width: 86px; padding: 10px 12px; }
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-kicker">⛳ Preparazione Green Card</div>
+      <h1>Golf <span>Patentino</span><br>facile da ripassare</h1>
+      <p>Teoria, regole, etichetta, punteggio e quiz in un'app più visiva, pensata per studiare velocemente prima dell'esame.</p>
+    </div>
+    <div class="hero-panel">
+      <strong>Allenamento rapido</strong>
+      <div class="hero-list">
+        <span>✓ Ripassa le regole essenziali</span>
+        <span>✓ Guarda video mirati</span>
+        <span>✓ Testati con il quiz finale</span>
+        <span>✓ Memorizza penalità e comportamenti</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <button class="active" onclick="showSection('teoria')">📚 Teoria</button>
+  <button onclick="showSection('regole')">📋 Regole</button>
+  <button onclick="showSection('scoring')">🏌️ Punteggio</button>
+  <button onclick="showSection('etichetta')">🤝 Etichetta</button>
+  <button onclick="showSection('glossario')">📖 Glossario</button>
+  <button onclick="showSection('video')">▶️ Video</button>
+  <button onclick="showSection('quiz')">🎯 Quiz</button>
+</nav>
+
+<div class="content">
+
+  <!-- ===================== TEORIA ===================== -->
+  <div class="section active" id="teoria">
+    <p class="section-intro">Fondamentali del Golf</p>
+    <p class="section-sub">Tutto quello che devi sapere prima dell'esame</p>
+
+    <div class="dashboard">
+      <div class="dash-card"><div class="num">18</div><span class="label">buche standard</span></div>
+      <div class="dash-card"><div class="num">14</div><span class="label">mazze massime</span></div>
+      <div class="dash-card"><div class="num">3'</div><span class="label">ricerca pallina</span></div>
+      <div class="dash-card"><div class="num">70%</div><span class="label">target minimo</span></div>
+    </div>
+
+    <div class="topic-grid">
+      <div class="topic-tile"><strong>Campo</strong><span>Tee, fairway, rough, bunker, green e penalty area.</span></div>
+      <div class="topic-tile"><strong>Regole</strong><span>Le situazioni più frequenti da conoscere prima dell'esame.</span></div>
+      <div class="topic-tile"><strong>Etichetta</strong><span>Sicurezza, rispetto del campo e velocità di gioco.</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Il Campo da Golf</h2>
+      <p>Un campo standard è composto da <strong>18 buche</strong> (o 9 in alcuni campi). Ogni buca è un percorso dal tee di partenza fino alla buca (hole) sul green.</p>
+      <h3>Le Zone del Campo</h3>
+      <ul>
+        <li><strong>Tee Box (Area di partenza)</strong> — Zona da cui si inizia ogni buca. Il colore dei tee indica la difficoltà.</li>
+        <li><strong>Fairway</strong> — L'erba tagliata corta tra tee e green. È la zona "sicura".</li>
+        <li><strong>Rough</strong> — Erba alta ai lati del fairway. Rende il gioco più difficile.</li>
+        <li><strong>Bunker (Sand trap)</strong> — Ostacolo di sabbia. Regole speciali di gioco.</li>
+        <li><strong>Green</strong> — Area con erba finissima dove si trova la buca con la bandiera (pin/flag).</li>
+        <li><strong>Water Hazard</strong> — Ostacoli d'acqua (laghi, ruscelli). Penalità se la pallina finisce dentro.</li>
+        <li><strong>Out of Bounds (OB)</strong> — Zona fuori campo, segnalata da paletti bianchi. Penalità.</li>
+      </ul>
+      <div class="highlight-box">
+        <p>🔑 I paletti colorati identificano le zone speciali: <strong>Bianco = OB</strong>, <strong>Giallo = Penalty Area</strong>, <strong>Rosso = Red Penalty Area laterale</strong></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>I Colori dei Tee</h2>
+      <table>
+        <tr><th>Colore</th><th>Per chi</th><th>Note</th></tr>
+        <tr><td>🔴 Rosso</td><td>Donne</td><td>Distanze più brevi</td></tr>
+        <tr><td>🟡 Giallo / Oro</td><td>Senior / Signore</td><td>Intermedio</td></tr>
+        <tr><td>⬜ Bianco</td><td>Uomini amatori</td><td>Standard maschile</td></tr>
+        <tr><td>🔵 Blu</td><td>Giocatori avanzati</td><td>Distanze maggiori</td></tr>
+        <tr><td>⬛ Nero</td><td>Professionisti</td><td>Distanze massime</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>L'Attrezzatura</h2>
+      <h3>Le Mazze</h3>
+      <p>Si possono portare in campo un <strong>massimo di 14 mazze</strong>. Portarne di più comporta una penalità.</p>
+      <ul>
+        <li><strong>Wood (Legni)</strong> — Distanze lunghe. Il driver (1 Wood) è il più potente.</li>
+        <li><strong>Irons (Ferri)</strong> — Versatili, numerati da 1 a 9. Più alto il numero, più breve e alta la traiettoria.</li>
+        <li><strong>Wedges</strong> — Per corte distanze e bunker (Pitching, Gap, Sand, Lob Wedge).</li>
+        <li><strong>Putter</strong> — Solo per il green, per far rotolare la pallina nella buca.</li>
+      </ul>
+      <div class="highlight-box">
+        <p>🔑 Regola importante: <strong>massimo 14 mazze</strong> nel bag durante il gioco.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>L'Esame Green Card</h2>
+      <h3>Cosa comprende</h3>
+      <ul>
+        <li>Test scritto sulle regole di golf (Regole R&A)</li>
+        <li>Conoscenza dell'etichetta e del comportamento in campo</li>
+        <li>Nozioni di punteggio (Par, Handicap, Stableford ecc.)</li>
+        <li>Prova pratica in campo (a seconda del circolo)</li>
+      </ul>
+      <h3>Punteggio minimo richiesto</h3>
+      <p>Generalmente servono <strong>14-15 risposte corrette su 20</strong> (70-75%) per superare il test scritto.</p>
+      <div class="highlight-box">
+        <p>🏌️ La Green Card è il documento che certifica la conoscenza delle regole di base e dell'etichetta per poter giocare su un campo ufficiale.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== REGOLE ===================== -->
+  <div class="section" id="regole">
+    <p class="section-intro">Regole Principali</p>
+    <p class="section-sub">Le norme fondamentali del gioco del golf (R&A Rules)</p>
+
+    <div class="card">
+      <h2>📌 Regola 1 — Il Gioco</h2>
+      <p>Il golf si gioca seguendo le regole con integrità, sportività e considerazione per gli altri giocatori. La pallina deve essere giocata <strong>come si trova</strong> e il campo deve essere giocato <strong>come si trova</strong>.</p>
+      <div class="penalty-box">
+        <p>⚠️ <strong>Principio fondamentale:</strong> Non migliorare mai la propria posizione in campo senza autorizzazione delle regole.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📌 Regola 4 — Il Bag</h2>
+      <ul>
+        <li>Massimo <strong>14 mazze</strong> nel bag durante il round</li>
+        <li>Penalità per ogni buca in cui si usa una mazza in eccesso: <strong>2 colpi</strong> (max 4 colpi al round)</li>
+        <li>È vietato usare mazze modificate in modo non standard</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>📌 Regola 6 — La Pallina</h2>
+      <ul>
+        <li>Ogni giocatore deve giocare la <strong>propria pallina</strong></li>
+        <li>La pallina può essere <strong>sostituita</strong> solo quando le regole lo permettono</li>
+        <li>Se si gioca la pallina sbagliata: <strong>penalità di 2 colpi</strong> (stroke play)</li>
+        <li>La pallina può essere identificata sollevandola dopo averne avvisato il marker</li>
+      </ul>
+      <div class="highlight-box">
+        <p>🔑 Consiglio pratico: segna sempre la tua pallina con un pennarello per evitare confusione.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📌 Regola 9 — Prendere Sollievo</h2>
+      <h3>Sollievo senza penalità (1 lunghezza di mazza)</h3>
+      <ul>
+        <li>Condizioni anomale del campo (GUR — Ground Under Repair)</li>
+        <li>Ostacoli immovibili</li>
+        <li>Animali che scavano buche</li>
+      </ul>
+      <h3>Sollievo con penalità (1 colpo)</h3>
+      <ul>
+        <li>Pallina in Penalty Area (gialla o rossa)</li>
+        <li>Pallina non trovata o fuori limite (OB)</li>
+        <li>Pallina ingiocabile</li>
+      </ul>
+      <div class="penalty-box">
+        <p>⚠️ OB e pallina persa: si ridà il colpo dall'<strong>area di partenza originale + 1 colpo di penalità</strong> (colpo e distanza).</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📌 Regola 12 — Bunker</h2>
+      <ul>
+        <li>In un bunker <strong>non si può toccare la sabbia</strong> con la mazza prima del colpo (ground)</li>
+        <li>Non si possono rimuovere oggetti naturali dal bunker (foglie, rametti)</li>
+        <li>Si possono rimuovere oggetti artificiali (lattine, rifiuti)</li>
+        <li>Penalità per "grounding" in bunker: <strong>2 colpi</strong></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>📌 Regola 13 — Green</h2>
+      <ul>
+        <li>Sul green la pallina può sempre essere <strong>sollevata e pulita</strong></li>
+        <li>La linea di putt può essere toccata solo per rimuovere materiale staccato</li>
+        <li>Non si deve calpestare la linea di putt altrui</li>
+        <li>Il <strong>pitch mark</strong> (segno della pallina) va sempre riparato</li>
+        <li>La bandiera può essere tenuta, rimossa o tolta durante il putt</li>
+      </ul>
+      <div class="highlight-box">
+        <p>🔑 Se la pallina in movimento colpisce la bandiera nel buco: nessuna penalità (dal 2019). La pallina viene giocata dove si trova.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📌 Regola 18 — Stroke Play (Gioco a colpi)</h2>
+      <ul>
+        <li>Si conta ogni colpo effettuato su ogni buca</li>
+        <li>Il punteggio totale determina il vincitore</li>
+        <li>Il marker deve firmare la scorecard del compagno</li>
+        <li>Scorecard firmata e consegnata: il punteggio è definitivo</li>
+      </ul>
+      <div class="penalty-box">
+        <p>⚠️ Consegnare una scorecard con un punteggio più basso del reale: <strong>squalifica</strong>.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📌 Regola 16 — Pallina Ingiocabile</h2>
+      <p>Il giocatore può sempre dichiarare la propria pallina ingiocabile (tranne in penalty area d'acqua). Opzioni con <strong>1 colpo di penalità</strong>:</p>
+      <ol>
+        <li>Tornare al punto da cui era stata giocata (stroke and distance)</li>
+        <li>Lasciare la pallina tra sé e la buca, allontanandosi entro 2 lunghezze di mazza</li>
+        <li>Rilasciare sulla linea tra buca e pallina, andando indietro quanto si vuole</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ===================== SCORING ===================== -->
+  <div class="section" id="scoring">
+    <p class="section-intro">Punteggio & Handicap</p>
+    <p class="section-sub">Terminologia e sistemi di gioco</p>
+
+    <div class="card">
+      <h2>Il Par</h2>
+      <p>Il <strong>par</strong> è il numero di colpi che un giocatore esperto deve impiegare per completare una buca. Si divide in:</p>
+      <table>
+        <tr><th>Tipo</th><th>Uomini</th><th>Donne</th><th>Tipico</th></tr>
+        <tr><td>Par 3</td><td>&lt; 229m</td><td>&lt; 192m</td><td>Breve, 1 colpo al green</td></tr>
+        <tr><td>Par 4</td><td>229-434m</td><td>192-374m</td><td>Media difficoltà</td></tr>
+        <tr><td>Par 5</td><td>&gt;434m</td><td>&gt;374m</td><td>Lunga, 3 colpi al green</td></tr>
+      </table>
+      <p style="margin-top:10px; font-size:13px; color:#555;">Un campo da 18 buche ha tipicamente un par totale di <strong>70–72</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h2>Terminologia dei Punteggi</h2>
+      <table>
+        <tr><th>Nome</th><th>Colpi vs Par</th><th>Simbolo</th></tr>
+        <tr><td>Condor</td><td>−4</td><td>Eccezionale</td></tr>
+        <tr><td>Albatross / Double Eagle</td><td>−3</td><td>Rarissimo</td></tr>
+        <tr><td>Eagle</td><td>−2</td><td>Eccellente</td></tr>
+        <tr><td><strong>Birdie</strong></td><td><strong>−1</strong></td><td>Molto buono</td></tr>
+        <tr><td><strong>Par</strong></td><td><strong>0</strong></td><td>Nella media</td></tr>
+        <tr><td><strong>Bogey</strong></td><td><strong>+1</strong></td><td>Discreto</td></tr>
+        <tr><td>Double Bogey</td><td>+2</td><td>Sotto la media</td></tr>
+        <tr><td>Triple Bogey</td><td>+3</td><td>Difficoltà</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>L'Handicap</h2>
+      <p>L'handicap è un numero che misura il livello di gioco di un golfista. <strong>Più basso è l'handicap, più bravo è il giocatore.</strong></p>
+      <ul>
+        <li>Un giocatore con <strong>handicap 0</strong> è detto "scratch"</li>
+        <li>L'handicap massimo ufficiale WHS è <strong>54</strong> per uomini e donne</li>
+        <li>L'handicap si calcola con il <strong>World Handicap System (WHS)</strong></li>
+        <li>Per il gioco a stableford, si riceve 1 colpo di vantaggio per ogni punto di handicap</li>
+      </ul>
+      <div class="highlight-box">
+        <p>🔑 <strong>Handicap Index</strong> = media dei migliori punteggi differenziali / Course Rating e Slope.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Sistema Stableford</h2>
+      <p>Il formato più comune nei circoli italiani. Si assegnano punti in base al numero di colpi rispetto al par netto (considerando l'handicap):</p>
+      <table>
+        <tr><th>Risultato</th><th>Punti</th></tr>
+        <tr><td>Eagle o meglio</td><td>4 punti</td></tr>
+        <tr><td>Birdie</td><td>3 punti</td></tr>
+        <tr><td>Par</td><td>2 punti</td></tr>
+        <tr><td>Bogey</td><td>1 punto</td></tr>
+        <tr><td>Double Bogey o peggio</td><td>0 punti</td></tr>
+      </table>
+      <div class="highlight-box">
+        <p>🔑 Nello stableford si <strong>alza la pallina</strong> quando non si possono più fare punti. Questo velocizza il gioco.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Course Rating & Slope</h2>
+      <ul>
+        <li><strong>Course Rating</strong> — Valutazione ufficiale della difficoltà di un campo per uno scratch player (in colpi)</li>
+        <li><strong>Slope Rating</strong> — Misura la difficoltà del campo per un giocatore medio vs uno scratch. Va da 55 a 155 (standard = 113)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===================== ETICHETTA ===================== -->
+  <div class="section" id="etichetta">
+    <p class="section-intro">Etichetta & Comportamento</p>
+    <p class="section-sub">Le norme non scritte che ogni golfista deve conoscere</p>
+
+    <div class="card">
+      <h2>Sicurezza in Campo</h2>
+      <div class="etiquette-item">
+        <div class="etiq-icon">⚠️</div>
+        <div class="etiq-text">
+          <strong>Non swingare mai quando qualcuno è vicino</strong>
+          <span>Assicurati che non ci siano persone nel raggio d'azione prima di colpire.</span>
+        </div>
+      </div>
+      <div class="etiquette-item">
+        <div class="etiq-icon">🗣️</div>
+        <div class="etiq-text">
+          <strong>"Fore!" — L'urlo di pericolo</strong>
+          <span>Se la tua pallina va verso altri giocatori, grida immediatamente "Fore!" per avvisarli. È obbligatorio.</span>
+        </div>
+      </div>
+      <div class="etiquette-item">
+        <div class="etiq-icon">🚗</div>
+        <div class="etiq-text">
+          <strong>Non guidare mai un buggy su green e tee box</strong>
+          <span>I buggy motorizzati sono vietati su green, aree di partenza e dintorni.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Rispetto del Campo</h2>
+      <div class="etiquette-item">
+        <div class="etiq-icon">🔧</div>
+        <div class="etiq-text">
+          <strong>Ripara sempre i pitch mark</strong>
+          <span>Quando la pallina atterra sul green crea un segno (pitch mark): va sempre riparato con l'apposito attrezzo. Ripara anche quelli degli altri.</span>
+        </div>
+      </div>
+      <div class="etiquette-item">
+        <div class="etiq-icon">🌿</div>
+        <div class="etiq-text">
+          <strong>Rimetti sempre la zolla (divot)</strong>
+          <span>Quando fai un colpo dal fairway si stacca un pezzo di erba: raccoglilo e rimettilo al suo posto o usa la miscela di sabbia e seme.</span>
+        </div>
+      </div>
+      <div class="etiquette-item">
+        <div class="etiq-icon">🏖️</div>
+        <div class="etiq-text">
+          <strong>Livella il bunker dopo il colpo</strong>
+          <span>Dopo aver giocato da un bunker, livella la sabbia con il rastrello apposito. Lascia il rastrello fuori dal bunker.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Velocità di Gioco (Pace of Play)</h2>
+      <div class="etiquette-item">
+        <div class="etiq-icon">⏱️</div>
+        <div class="etiq-text">
+          <strong>Mantieni il passo con il gruppo davanti</strong>
+          <span>Non il gruppo dietro. Se ti allontani di una buca, invita il gruppo dietro a passare (let through).</span>
+        </div>
+      </div>
+      <div class="etiquette-item">
+        <div class="etiq-icon">🎯</div>
+        <div class="etiq-text">
+          <strong>Ready Golf</strong>
+          <span>Chi è pronto colpisce per primo (nei formati amichevoli), indipendentemente dalla distanza dal green. Evita lunghe attese.</span>
+        </div>
+      </div>
+      <div class="etiquette-item">
+        <div class="etiq-icon">🔍</div>
+        <div class="etiq-text">
+          <strong>Max 3 minuti per cercare la pallina</strong>
+          <span>Dal 2019 il tempo massimo di ricerca è 3 minuti (prima erano 5). Superato questo tempo, la pallina è persa.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Comportamento sul Green</h2>
+      <div class="etiquette-item">
+        <div class="etiq-icon">👣</div>
+        <div class="etiq-text">
+          <strong>Non calpestare la linea di putt altrui</strong>
+          <span>La linea immaginaria tra la pallina del compagno e la buca è sacra. Non camminare mai sopra.</span>
+        </div>
+      </div>
+      <div class="etiquette-item">
+        <div class="etiq-icon">🤫</div>
+        <div class="etiq-text">
+          <strong>Silenzio e immobilità durante il putt</strong>
+          <span>Quando un compagno sta puttando, fermati, fai silenzio e non fare movimenti che possano distrarlo.</span>
+        </div>
+      </div>
+      <div class="etiquette-item">
+        <div class="etiq-icon">🏳️</div>
+        <div class="etiq-text">
+          <strong>Gestione della bandiera</strong>
+          <span>Chi è più vicino alla buca tiene o rimuove la bandiera per i compagni. Rimetti sempre la bandiera prima di lasciare il green.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Abbigliamento e Regole del Circolo</h2>
+      <div class="etiquette-item">
+        <div class="etiq-icon">👔</div>
+        <div class="etiq-text">
+          <strong>Dress code rigoroso</strong>
+          <span>La maggior parte dei circoli richiede colletto alla camicia, pantaloni o shorts appropriati. Niente jeans, maglie a canottiera o scarpe da ginnastica.</span>
+        </div>
+      </div>
+      <div class="etiquette-item">
+        <div class="etiq-icon">📵</div>
+        <div class="etiq-text">
+          <strong>Cellulare in silenzioso</strong>
+          <span>Il telefono va tenuto in modalità silenziosa sul campo. Le conversazioni vanno evitate durante il gioco altrui.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== GLOSSARIO ===================== -->
+  <div class="section" id="glossario">
+    <p class="section-intro">Glossario Golf</p>
+    <p class="section-sub">Termini tecnici che potresti incontrare all'esame</p>
+    <input class="search-box" id="glossarySearch" placeholder="Cerca un termine: bunker, drop, marker, OB..." oninput="filterGlossary()">
+
+    <div class="card">
+      <div class="glossary-item"><div class="glossary-term">Address</div><div class="glossary-def">Posizione del giocatore e della mazza in preparazione al colpo. La pallina è stata "indirizzata" quando il giocatore ha assunto la posizione.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Away</div><div class="glossary-def">Il giocatore la cui pallina è più distante dalla buca. Tradizionalmente colpisce per primo nel match play.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Casual Water</div><div class="glossary-def">Accumulo temporaneo d'acqua (es. dopo la pioggia) non parte di una penalty area. Diritto a sollievo senza penalità.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Divot</div><div class="glossary-def">Pezzo di erba e terra sollevato dalla mazza durante un colpo sul fairway. Va sempre rimesso al suo posto.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Drop</div><div class="glossary-def">Azione di rilasciare la pallina nell'area di sollievo. Dal 2019 il drop va eseguito da altezza del ginocchio.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Fore!</div><div class="glossary-def">Grido di avvertimento quando una pallina può colpire altri giocatori. Va urlato immediatamente.</div></div>
+      <div class="glossary-item"><div class="glossary-term">GUR (Ground Under Repair)</div><div class="glossary-def">Area del campo in manutenzione, segnalata da linee bianche o cartelli. Diritto a sollievo gratuito.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Hole in One / Ace</div><div class="glossary-def">Portare la pallina in buca con un solo colpo dal tee. L'evento più celebrato nel golf.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Honor</div><div class="glossary-def">Privilegio di giocare per primo dal tee, assegnato a chi ha fatto il punteggio migliore sulla buca precedente.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Lie</div><div class="glossary-def">Posizione della pallina a terra. Un buon lie è in erba corta; un cattivo lie è in rough fitto o in una depressione.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Marker</div><div class="glossary-def">1) Piccolo oggetto piatto per marcare la pallina sul green. 2) Il compagno che segna il punteggio ufficiale.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Match Play</div><div class="glossary-def">Formato di gara in cui si gioca buca per buca. Vince chi vince più buche (non chi fa meno colpi totali).</div></div>
+      <div class="glossary-item"><div class="glossary-term">Mulligan</div><div class="glossary-def">Colpo extra "amichevole" dopo un tiro sbagliato. NON è consentito nelle gare ufficiali.</div></div>
+      <div class="glossary-item"><div class="glossary-term">OB (Out of Bounds)</div><div class="glossary-def">Zona fuori dal campo di gioco, delimitata da paletti bianchi. Penalità: colpo e distanza (si ridà il colpo + 1 penalità).</div></div>
+      <div class="glossary-item"><div class="glossary-term">Penalty Area</div><div class="glossary-def">Zone d'acqua o pericolo marcate in giallo o rosso. Con penalità di 1 colpo si può prendere sollievo fuori.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Pin / Flag</div><div class="glossary-def">L'asta con la bandiera che indica la posizione della buca sul green.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Pitch Mark</div><div class="glossary-def">Segno lasciato dalla pallina atterrando sul green. Va sempre riparato con l'apposito attrezzo (pitch repairer).</div></div>
+      <div class="glossary-item"><div class="glossary-term">Provisional Ball</div><div class="glossary-def">Seconda pallina giocata provvisoriamente quando si sospetta che la prima sia OB o persa. Evita di dover tornare indietro.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Stroke Play</div><div class="glossary-def">Formato più comune: si contano tutti i colpi su tutte le 18 buche. Vince chi ne fa meno in totale.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Tee</div><div class="glossary-def">1) Il piccolo piolo su cui si appoggia la pallina per il primo colpo. 2) L'area di partenza della buca (Tee Box).</div></div>
+      <div class="glossary-item"><div class="glossary-term">Unplayable Ball</div><div class="glossary-def">Pallina che il giocatore dichiara ingiocabile. 3 opzioni di sollievo disponibili, tutte con 1 colpo di penalità.</div></div>
+    </div>
+  </div>
+
+
+
+  <!-- ===================== VIDEO ===================== -->
+  <div class="section" id="video">
+    <p class="section-intro">Video utili per capire meglio</p>
+    <p class="section-sub">Link esterni selezionati per ripassare regole, comportamento e situazioni tipiche in campo.</p>
+
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="video-thumb">▶</div>
+        <div class="video-body">
+          <h2>R&A — Quick Guide to the Rules</h2>
+          <p>Guida ufficiale e sintetica alle regole del golf, adatta a chi sta preparando l'esame base.</p>
+          <a class="video-link" href="https://www.randa.org/en/videos/the-quick-guide-to-the-rules-of-golf" target="_blank" rel="noopener">Apri video R&A</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">▶</div>
+        <div class="video-body">
+          <h2>USGA — Rules Education</h2>
+          <p>Area didattica ufficiale con video, spiegazioni e percorsi formativi sulle regole del golf.</p>
+          <a class="video-link" href="https://www.usga.org/content/usga/home-page/rules-hub/education.html" target="_blank" rel="noopener">Apri formazione USGA</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">▶</div>
+        <div class="video-body">
+          <h2>USGA — Rules 101</h2>
+          <p>Corso gratuito per costruire una base solida sulle situazioni più comuni durante un giro.</p>
+          <a class="video-link" href="https://rules.usga.org/courses/rules-101/" target="_blank" rel="noopener">Apri Rules 101</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-thumb">▶</div>
+        <div class="video-body">
+          <h2>R&A — Pace of Play</h2>
+          <p>Indicazioni pratiche per giocare con il giusto ritmo, tema molto importante anche per l'etichetta.</p>
+          <a class="video-link" href="https://www.randa.org/en/rules/pace-of-play" target="_blank" rel="noopener">Apri guida ritmo di gioco</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== QUIZ ===================== -->
+  <div class="section" id="quiz">
+    <p class="section-intro">Quiz di Preparazione</p>
+    <p class="section-sub">Mettiti alla prova con le domande tipiche dell'esame</p>
+
+    <div class="cat-filter">
+      <button class="cat-btn active" onclick="filterQuiz('all', this)">Tutte</button>
+      <button class="cat-btn" onclick="filterQuiz('regole', this)">Regole</button>
+      <button class="cat-btn" onclick="filterQuiz('scoring', this)">Punteggio</button>
+      <button class="cat-btn" onclick="filterQuiz('etichetta', this)">Etichetta</button>
+      <button class="cat-btn" onclick="filterQuiz('campo', this)">Campo</button>
+    </div>
+
+    <div id="quiz-container"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-secondary" id="btn-prev" onclick="prevQ()" style="display:none">← Precedente</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQ()">Prossima →</button>
+      <button class="btn btn-primary" id="btn-result" onclick="showResults()" style="display:none">Vedi Risultato 🏆</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const allQuestions = [
+  {
+    cat: 'campo',
+    q: 'Quali paletti indicano la zona Out of Bounds (OB)?',
+    opts: ['Paletti gialli', 'Paletti rossi', 'Paletti bianchi', 'Paletti blu'],
+    ans: 2,
+    exp: 'I paletti BIANCHI delimitano l\'Out of Bounds. I gialli indicano le penalty area, i rossi le penalty area laterali.'
+  },
+  {
+    cat: 'regole',
+    q: 'Quante mazze si possono portare in campo durante un round ufficiale?',
+    opts: ['10', '12', '14', '16'],
+    ans: 2,
+    exp: 'Il massimo consentito è 14 mazze. Portarne di più comporta una penalità di 2 colpi per ogni buca in cui si usa la mazza in eccesso, fino a un massimo di 4 colpi.'
+  },
+  {
+    cat: 'scoring',
+    q: 'Come si chiama il punteggio di 1 colpo sotto il par su una singola buca?',
+    opts: ['Eagle', 'Par', 'Birdie', 'Bogey'],
+    ans: 2,
+    exp: 'Birdie = 1 colpo sotto par. Eagle = 2 sotto, Albatross = 3 sotto. Bogey = 1 sopra par.'
+  },
+  {
+    cat: 'etichetta',
+    q: 'Cosa devi fare immediatamente se la tua pallina rischia di colpire altri giocatori?',
+    opts: ['Fischiare', 'Gridare "Fore!"', 'Gridare "Attenzione!"', 'Niente, aspettare'],
+    ans: 1,
+    exp: '"Fore!" è il grido internazionale di avvertimento nel golf. Va urlato immediatamente e con forza per avvisare i giocatori del pericolo.'
+  },
+  {
+    cat: 'etichetta',
+    q: 'Quanto tempo hai per cercare una pallina persa?',
+    opts: ['5 minuti', '3 minuti', '2 minuti', '10 minuti'],
+    ans: 1,
+    exp: 'Dal 2019 il tempo massimo di ricerca è stato ridotto da 5 a 3 minuti. Superato questo tempo, la pallina è dichiarata persa.'
+  },
+  {
+    cat: 'regole',
+    q: 'Cosa succede se giochi la pallina di un altro giocatore per errore (stroke play)?',
+    opts: ['Non succede nulla', 'Penalità di 1 colpo', 'Penalità di 2 colpi', 'Squalifica immediata'],
+    ans: 2,
+    exp: 'Giocare la pallina sbagliata comporta una penalità di 2 colpi. Bisogna poi trovare e giocare la propria pallina corretta.'
+  },
+  {
+    cat: 'regole',
+    q: 'In un bunker, cosa NON puoi fare prima di colpire?',
+    opts: ['Scegliere la mazza', 'Toccare la sabbia con la mazza', 'Rimuovere una lattina', 'Stare nel bunker'],
+    ans: 1,
+    exp: 'Il "grounding" (toccare la sabbia con la mazza) in un bunker prima del colpo è vietato. Penalità: 2 colpi. Gli oggetti artificiali come lattine possono essere rimossi.'
+  },
+  {
+    cat: 'campo',
+    q: 'Cosa si intende per GUR (Ground Under Repair)?',
+    opts: ['Una zona d\'acqua', 'Un area del campo in manutenzione che dà diritto a sollievo gratuito', 'Un bunker', 'La zona vicino all\'OB'],
+    ans: 1,
+    exp: 'GUR = Ground Under Repair. È un\'area del campo in manutenzione, segnalata da linee bianche o cartelli. Il giocatore ha diritto a sollievo senza penalità.'
+  },
+  {
+    cat: 'scoring',
+    q: 'Nello Stableford, quanti punti si ottengono per un par netto?',
+    opts: ['0 punti', '1 punto', '2 punti', '3 punti'],
+    ans: 2,
+    exp: 'Nel sistema Stableford: par = 2 punti, birdie = 3, eagle = 4, bogey = 1, double bogey o peggio = 0.'
+  },
+  {
+    cat: 'etichetta',
+    q: 'Sul green, cosa è assolutamente vietato fare?',
+    opts: ['Riparare un pitch mark', 'Calpestare la linea di putt di un altro giocatore', 'Marcare la propria pallina', 'Tenere la bandiera'],
+    ans: 1,
+    exp: 'Calpestare la linea di putt altrui è una grave mancanza di etichetta. La linea immaginaria tra la pallina e la buca di un compagno è sacra e non va mai calpestata.'
+  },
+  {
+    cat: 'regole',
+    q: 'Cosa succede se consegni una scorecard con un punteggio più basso del reale?',
+    opts: ['Penalità di 2 colpi', 'Penalità di 1 colpo per buca', 'Squalifica', 'Niente, vale il punteggio corretto'],
+    ans: 2,
+    exp: 'Consegnare una scorecard con un punteggio inferiore al reale porta alla SQUALIFICA. Il giocatore è responsabile della correttezza della propria scorecard.'
+  },
+  {
+    cat: 'campo',
+    q: 'Da quale altezza va eseguito il drop (rilascio della pallina) secondo le regole attuali?',
+    opts: ['Altezza spalla', 'Altezza vita', 'Altezza ginocchio', 'Da terra'],
+    ans: 2,
+    exp: 'Dal 2019, il drop va eseguito lasciando cadere la pallina dall\'altezza del ginocchio. In precedenza era richiesta l\'altezza della spalla.'
+  },
+  {
+    cat: 'regole',
+    q: 'Puoi dichiarare la tua pallina ingiocabile in qualsiasi situazione?',
+    opts: ['Sì, sempre', 'No, mai', 'Sì, ovunque tranne nelle penalty area d\'acqua', 'Solo nei bunker'],
+    ans: 2,
+    exp: 'Il giocatore può dichiarare la propria pallina ingiocabile ovunque in campo tranne nelle penalty area (d\'acqua). Penalità: 1 colpo, con 3 opzioni di sollievo.'
+  },
+  {
+    cat: 'scoring',
+    q: 'Cosa significa "scratch player"?',
+    opts: ['Un giocatore alle prime armi', 'Un giocatore con handicap 0', 'Un giocatore con handicap 54', 'Un professionista'],
+    ans: 1,
+    exp: 'Uno "scratch player" è un giocatore con handicap 0. È considerato un punto di riferimento: si suppone che un scratch player faccia il par del campo.'
+  },
+  {
+    cat: 'etichetta',
+    q: 'Dopo aver giocato da un bunker, cosa DEVI fare?',
+    opts: ['Uscire il più in fretta possibile', 'Livellare la sabbia con il rastrello', 'Riempire il bunker con erba', 'Niente di particolare'],
+    ans: 1,
+    exp: 'Livellare il bunker con il rastrello dopo il colpo è un dovere fondamentale di etichetta. Il rastrello va lasciato fuori dal bunker dopo l\'uso.'
+  },
+  {
+    cat: 'regole',
+    q: 'Cosa è una "provisional ball"?',
+    opts: ['Una pallina di riserva nel bag', 'Una seconda pallina giocata provvisoriamente quando si sospetta che la prima sia OB o persa', 'Una pallina speciale per il putt', 'Una pallina da usare solo nelle gare'],
+    ans: 1,
+    exp: 'La provisional ball si gioca provvisoriamente quando si sospetta che la pallina originale sia fuori limite o persa. Va dichiarata prima di andarla a cercare. Se la prima è trovata in gioco, la provisional è abbandonata.'
+  },
+  {
+    cat: 'campo',
+    q: 'Quante buche ha un campo da golf standard?',
+    opts: ['9', '12', '18', '21'],
+    ans: 2,
+    exp: 'Un campo da golf standard è composto da 18 buche. Esistono anche campi da 9 buche, dove si fa spesso il giro due volte per completare un round completo.'
+  },
+  {
+    cat: 'scoring',
+    q: 'Qual è la penalità nel Match Play se la pallina di un giocatore finisce nella penalty area gialla?',
+    opts: ['Perde il buco automaticamente', '1 colpo di penalità', '2 colpi di penalità', 'Nessuna penalità'],
+    ans: 1,
+    exp: 'Sia in stroke play che in match play, la penalità per la penalty area (gialla o rossa) è di 1 colpo. Si prende sollievo fuori dall\'area di penalità.'
+  },
+  {
+    cat: 'etichetta',
+    q: 'Chi ha il diritto di giocare per primo dal tee (l\'Honor)?',
+    opts: ['Il giocatore più anziano', 'Chi ha fatto il punteggio migliore sulla buca precedente', 'Il giocatore con l\'handicap più basso', 'Si lancia una moneta'],
+    ans: 1,
+    exp: 'L\'Honor spetta a chi ha fatto il punteggio migliore (netto o lordo, a seconda del formato) sulla buca precedente. Sulla prima buca si sorteggia o si decide per accordo.'
+  },
+  {
+    cat: 'regole',
+    q: 'Puoi pulire la pallina sul green?',
+    opts: ['No, mai', 'Sì, sempre quando è sul green', 'Solo se è molto sporca', 'Solo con il permesso del marker'],
+    ans: 1,
+    exp: 'Sul green la pallina può sempre essere sollevata, pulita e rimarcata. In altre zone del campo, la pallina può essere sollevata solo quando le regole lo consentono specificamente.'
+  }
+];
+
+let filtered = [...allQuestions];
+let current = 0;
+let answers = new Array(allQuestions.length).fill(null);
+let filteredAnswers = [];
+
+function filterQuiz(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (cat === 'all') {
+    filtered = [...allQuestions];
+  } else {
+    filtered = allQuestions.filter(q => q.cat === cat);
+  }
+  filteredAnswers = new Array(filtered.length).fill(null);
+  current = 0;
+  renderQ();
+}
+
+function renderQ() {
+  const container = document.getElementById('quiz-container');
+  const q = filtered[current];
+  const userAns = filteredAnswers[current];
+  const isAnswered = userAns !== null;
+  const total = filtered.length;
+
+  // Header
+  let header = `<div class="quiz-header">
+    <div>
+      <div class="score-label">Domanda</div>
+      <div class="score-val">${current + 1}<span style="font-size:18px;color:var(--green-pale)">/${total}</span></div>
+    </div>
+    <div style="text-align:right">
+      <div class="score-label">Corrette</div>
+      <div class="score-val" style="color:var(--gold)">${filteredAnswers.filter((a,i) => a !== null && a === filtered[i].ans).length}</div>
+    </div>
+    <div style="position:absolute;bottom:0;left:0;right:0;">
+      <div class="progress-bar"><div class="progress-fill" style="width:${((current+1)/total)*100}%"></div></div>
+    </div>
+  </div>`;
+
+  let opts = q.opts.map((o, i) => {
+    let cls = 'option-btn';
+    if (isAnswered) {
+      if (i === q.ans) cls += ' correct';
+      else if (i === userAns) cls += ' wrong';
+    }
+    return `<button class="${cls}" ${isAnswered ? 'disabled' : ''} onclick="selectAns(${i})">${o}</button>`;
+  }).join('');
+
+  let exp = isAnswered ? `<div class="explanation show">💡 ${q.exp}</div>` : '<div class="explanation"></div>';
+
+  let badgeMap = {regole:'🔴 Regole', scoring:'🔵 Punteggio', etichetta:'🟢 Etichetta', campo:'🟡 Campo'};
+
+  container.innerHTML = header + `
+    <div class="question-card">
+      <div class="question-num">${badgeMap[q.cat] || q.cat}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">${opts}</div>
+      ${exp}
+    </div>
+  `;
+
+  // Nav buttons
+  const prev = document.getElementById('btn-prev');
+  const next = document.getElementById('btn-next');
+  const result = document.getElementById('btn-result');
+
+  prev.style.display = current > 0 ? 'block' : 'none';
+
+  const isLast = current === filtered.length - 1;
+  if (isLast) {
+    next.style.display = 'none';
+    result.style.display = filteredAnswers[current] !== null ? 'block' : 'none';
+  } else {
+    result.style.display = 'none';
+    next.style.display = filteredAnswers[current] !== null ? 'block' : 'none';
+  }
+}
+
+function selectAns(idx) {
+  if (filteredAnswers[current] !== null) return;
+  filteredAnswers[current] = idx;
+  renderQ();
+}
+
+function nextQ() {
+  if (current < filtered.length - 1) { current++; renderQ(); }
+}
+
+function prevQ() {
+  if (current > 0) { current--; renderQ(); }
+}
+
+function showResults() {
+  const correct = filteredAnswers.filter((a, i) => a !== null && a === filtered[i].ans).length;
+  const total = filtered.length;
+  const pct = Math.round((correct / total) * 100);
+  let msg, color;
+  if (pct >= 75) { msg = '✅ Promosso! Sei pronto per l\'esame!'; color = 'var(--green-light)'; }
+  else if (pct >= 50) { msg = '📚 Quasi! Ripassate le domande sbagliate.'; color = 'var(--gold)'; }
+  else { msg = '🔄 Continua a studiare, ce la fai!'; color = '#e74c3c'; }
+
+  document.getElementById('quiz-container').innerHTML = `
+    <div class="result-card">
+      <div class="big-score" style="color:${color}">${pct}%</div>
+      <div class="result-msg">${msg}</div>
+      <div class="result-detail">${correct} risposte corrette su ${total}</div>
+    </div>
+  `;
+  document.getElementById('btn-prev').style.display = 'none';
+  document.getElementById('btn-next').style.display = 'none';
+  document.getElementById('btn-result').style.display = 'none';
+
+  // Restart button
+  document.querySelector('.quiz-nav').innerHTML += `<button class="btn btn-secondary" onclick="restartQuiz()">🔄 Ricomincia</button>`;
+}
+
+function restartQuiz() {
+  filteredAnswers = new Array(filtered.length).fill(null);
+  current = 0;
+  document.querySelector('.quiz-nav').innerHTML = `
+    <button class="btn btn-secondary" id="btn-prev" onclick="prevQ()" style="display:none">← Precedente</button>
+    <button class="btn btn-primary" id="btn-next" onclick="nextQ()">Prossima →</button>
+    <button class="btn btn-primary" id="btn-result" onclick="showResults()" style="display:none">Vedi Risultato 🏆</button>
+  `;
+  renderQ();
+}
+
+function showSection(id) {
+  stopAudio();
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const activeBtn = Array.from(document.querySelectorAll('nav button')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'"));
+  if (activeBtn) activeBtn.classList.add('active');
+  if (id === 'quiz') renderQ();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+
+function filterGlossary() {
+  const input = document.getElementById('glossarySearch');
+  if (!input) return;
+  const term = input.value.toLowerCase().trim();
+  document.querySelectorAll('#glossario .glossary-item').forEach(item => {
+    item.style.display = item.innerText.toLowerCase().includes(term) ? 'block' : 'none';
+  });
+}
+
+
+
+/* ===================== AUDIO SEMPLICE / GOOGLE ITALIANO ===================== */
+let audioRate = 0.72;
+let audioPitch = 0.96;
+let currentUtterance = null;
+let availableVoices = [];
+let selectedVoiceURI = '';
+let currentAudioKey = '';
+let currentAudioText = '';
+let currentAudioLabel = '';
+let audioVisibilityListenerAdded = false;
+
+function cleanTextForAudio(text) {
+  return text
+    .replace(/[⛳📚📋🏌️🤝📖🎯🏆✅🔑⚠️💡🔴🟡⬜🔵⬛🟢⏱️🔍🏖️👣🤫🏳️👔📵🌿🔧🚗🗣️▶⏸■]/g, ' ')
+    .replace(/\bOB\b/g, 'fuori limite')
+    .replace(/\bGUR\b/g, 'ground under repair')
+    .replace(/\bWHS\b/g, 'World Handicap System')
+    .replace(/R&A/g, 'R and A')
+    .replace(/USGA/g, 'U S G A')
+    .replace(/Green Card/g, 'green card')
+    .replace(/Tee Box/g, 'tee box')
+    .replace(/Penalty Area/g, 'penalty area')
+    .replace(/Out of Bounds/g, 'fuori limite')
+    .replace(/\s*[—–-]\s*/g, ', ')
+    .replace(/:/g, '. ')
+    .replace(/;/g, '. ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function getReadableTextFromElement(el) {
+  if (!el) return '';
+  const clone = el.cloneNode(true);
+  clone.querySelectorAll('button, nav, .audio-mini, .listen-card, script, style, .cat-filter, .quiz-nav').forEach(n => n.remove());
+  return cleanTextForAudio(clone.innerText || clone.textContent || '');
+}
+
+function setAudioStatus(message) {
+  document.querySelectorAll('.audio-status').forEach(el => { el.textContent = message || ''; });
+}
+
+function updateAudioButtons(state) {
+  const isPlaying = state === 'playing';
+  const isPaused = state === 'paused';
+  document.querySelectorAll('.audio-toggle, .listen-card').forEach(btn => {
+    btn.classList.toggle('paused', isPaused);
+    btn.textContent = isPlaying ? '⏸ Pausa' : '▶ Play';
+  });
+}
+
+function loadVoices() {
+  if (!('speechSynthesis' in window)) return [];
+  availableVoices = window.speechSynthesis.getVoices() || [];
+  const best = chooseGoogleItalianVoice();
+  selectedVoiceURI = best ? best.voiceURI : '';
+  return availableVoices;
+}
+
+function chooseGoogleItalianVoice() {
+  const italian = availableVoices.filter(v => (v.lang || '').toLowerCase().startsWith('it'));
+  if (!italian.length) return null;
+  const googleIt = italian.find(v => (v.name || '').toLowerCase().includes('google') && (v.lang || '').toLowerCase() === 'it-it')
+    || italian.find(v => (v.name || '').toLowerCase().includes('google'));
+  return googleIt || italian.find(v => (v.lang || '').toLowerCase() === 'it-it') || italian[0];
+}
+
+function getSelectedVoice() {
+  if (!availableVoices.length) loadVoices();
+  return availableVoices.find(v => v.voiceURI === selectedVoiceURI) || chooseGoogleItalianVoice();
+}
+
+function speakText(text, label = 'testo', key = '') {
+  if (!('speechSynthesis' in window)) {
+    setAudioStatus('Lettura vocale non supportata. Prova Chrome o Safari.');
+    return;
+  }
+  const cleaned = cleanTextForAudio(text);
+  if (!cleaned) {
+    setAudioStatus('Nessun testo da leggere.');
+    return;
+  }
+
+  loadVoices();
+  window.speechSynthesis.cancel();
+
+  currentAudioText = cleaned;
+  currentAudioLabel = label;
+  currentAudioKey = key || label;
+  currentUtterance = new SpeechSynthesisUtterance(cleaned);
+  currentUtterance.lang = 'it-IT';
+  const voice = getSelectedVoice();
+  if (voice) currentUtterance.voice = voice;
+  currentUtterance.rate = audioRate;
+  currentUtterance.pitch = audioPitch;
+  currentUtterance.volume = 1;
+  currentUtterance.onstart = () => {
+    setAudioStatus('In lettura: ' + label);
+    updateAudioButtons('playing');
+  };
+  currentUtterance.onend = () => {
+    setAudioStatus('Lettura completata.');
+    updateAudioButtons('idle');
+  };
+  currentUtterance.onerror = () => {
+    setAudioStatus('Lettura interrotta. Premi Play.');
+    updateAudioButtons('idle');
+  };
+  window.speechSynthesis.speak(currentUtterance);
+}
+
+function toggleAudio(text, label = 'testo', key = '') {
+  if (!('speechSynthesis' in window)) return;
+  const effectiveKey = key || label;
+
+  if (window.speechSynthesis.speaking && !window.speechSynthesis.paused && currentAudioKey === effectiveKey) {
+    window.speechSynthesis.pause();
+    setAudioStatus('In pausa.');
+    updateAudioButtons('paused');
+    return;
+  }
+
+  if (window.speechSynthesis.paused && currentAudioKey === effectiveKey) {
+    window.speechSynthesis.resume();
+    setAudioStatus('Ripresa: ' + currentAudioLabel);
+    updateAudioButtons('playing');
+    return;
+  }
+
+  speakText(text, label, effectiveKey);
+}
+
+function toggleCurrentSectionAudio() {
+  const active = document.querySelector('.section.active');
+  const title = active ? (active.querySelector('.section-intro')?.textContent || 'sezione') : 'sezione';
+  const key = active ? 'section-' + active.id : 'section';
+  toggleAudio(getReadableTextFromElement(active), title, key);
+}
+
+function stopAudio() {
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  updateAudioButtons('idle');
+}
+
+function buildAudioMini() {
+  return `
+    <div class="audio-mini" data-no-audio="true">
+      <div class="audio-mini-text">
+        <div class="audio-mini-title">Audio</div>
+        <div class="audio-status" aria-live="polite">Voce Google italiana, lenta.</div>
+      </div>
+      <button class="audio-toggle" type="button" onclick="toggleCurrentSectionAudio()">▶ Play</button>
+    </div>`;
+}
+
+function initAudioNotes() {
+  document.querySelectorAll('.audio-panel').forEach(el => el.remove());
+  document.querySelectorAll('.section').forEach(section => {
+    if (!section.querySelector('.audio-mini')) {
+      section.insertAdjacentHTML('afterbegin', buildAudioMini());
+    }
+  });
+  document.querySelectorAll('.card').forEach((card, idx) => {
+    if (!card.querySelector('.listen-card')) {
+      const title = card.querySelector('h2')?.textContent?.trim() || `Scheda ${idx + 1}`;
+      const safeTitle = title.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      card.insertAdjacentHTML('afterbegin', `<button class="listen-card" type="button" onclick="toggleAudio(getReadableTextFromElement(this.closest('.card')), '${safeTitle}', 'card-${idx}')">▶ Play</button>`);
+    }
+  });
+  loadVoices();
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    setTimeout(loadVoices, 300);
+    setTimeout(loadVoices, 1000);
+  }
+  if (!audioVisibilityListenerAdded) {
+    audioVisibilityListenerAdded = true;
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+        setAudioStatus('Nota: alcuni telefoni possono sospendere l’audio con schermo bloccato.');
+      }
+    });
+  }
+}
+
+window.addEventListener('beforeunload', stopAudio);
+window.addEventListener('DOMContentLoaded', initAudioNotes);
+
+// Init quiz
+renderQ();
+initAudioNotes();
+</script>
+</body>
+</html>
