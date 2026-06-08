@@ -907,6 +907,80 @@
     .question-text{font-size:17px;}
   }
 
+
+
+  /* AUDIO CONTROLS — VERSIONE SEMPLIFICATA */
+  .audio-mini {
+    background: rgba(255,255,255,0.86);
+    border: 1px solid rgba(26,58,42,0.10);
+    border-radius: 16px;
+    padding: 10px 12px;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow: 0 6px 18px rgba(26,58,42,0.08);
+  }
+  .audio-mini-text {
+    min-width: 0;
+  }
+  .audio-mini-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--green-deep);
+    line-height: 1.2;
+  }
+  .audio-status {
+    font-size: 11px;
+    color: #667266;
+    line-height: 1.25;
+    margin-top: 2px;
+    min-height: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
+  }
+  .audio-toggle,
+  .listen-card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--green-deep);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 10px 14px;
+    min-height: 42px;
+    min-width: 92px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(26,58,42,0.16);
+    touch-action: manipulation;
+  }
+  .listen-card {
+    margin-bottom: 12px;
+    min-width: auto;
+    font-size: 12px;
+    padding: 8px 12px;
+    min-height: 38px;
+    background: var(--green-mid);
+  }
+  .audio-toggle.paused,
+  .listen-card.paused {
+    background: var(--gold);
+    color: var(--green-deep);
+  }
+  @media (max-width: 480px) {
+    .audio-mini { border-radius: 14px; padding: 9px 10px; }
+    .audio-status { max-width: 145px; }
+    .audio-toggle { min-width: 86px; padding: 10px 12px; }
+  }
+
 </style>
 </head>
 <body>
@@ -1692,6 +1766,7 @@ function restartQuiz() {
 }
 
 function showSection(id) {
+  stopAudio();
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1711,8 +1786,198 @@ function filterGlossary() {
   });
 }
 
+
+
+/* ===================== AUDIO SEMPLICE / GOOGLE ITALIANO ===================== */
+let audioRate = 0.72;
+let audioPitch = 0.96;
+let currentUtterance = null;
+let availableVoices = [];
+let selectedVoiceURI = '';
+let currentAudioKey = '';
+let currentAudioText = '';
+let currentAudioLabel = '';
+let audioVisibilityListenerAdded = false;
+
+function cleanTextForAudio(text) {
+  return text
+    .replace(/[⛳📚📋🏌️🤝📖🎯🏆✅🔑⚠️💡🔴🟡⬜🔵⬛🟢⏱️🔍🏖️👣🤫🏳️👔📵🌿🔧🚗🗣️▶⏸■]/g, ' ')
+    .replace(/\bOB\b/g, 'fuori limite')
+    .replace(/\bGUR\b/g, 'ground under repair')
+    .replace(/\bWHS\b/g, 'World Handicap System')
+    .replace(/R&A/g, 'R and A')
+    .replace(/USGA/g, 'U S G A')
+    .replace(/Green Card/g, 'green card')
+    .replace(/Tee Box/g, 'tee box')
+    .replace(/Penalty Area/g, 'penalty area')
+    .replace(/Out of Bounds/g, 'fuori limite')
+    .replace(/\s*[—–-]\s*/g, ', ')
+    .replace(/:/g, '. ')
+    .replace(/;/g, '. ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function getReadableTextFromElement(el) {
+  if (!el) return '';
+  const clone = el.cloneNode(true);
+  clone.querySelectorAll('button, nav, .audio-mini, .listen-card, script, style, .cat-filter, .quiz-nav').forEach(n => n.remove());
+  return cleanTextForAudio(clone.innerText || clone.textContent || '');
+}
+
+function setAudioStatus(message) {
+  document.querySelectorAll('.audio-status').forEach(el => { el.textContent = message || ''; });
+}
+
+function updateAudioButtons(state) {
+  const isPlaying = state === 'playing';
+  const isPaused = state === 'paused';
+  document.querySelectorAll('.audio-toggle, .listen-card').forEach(btn => {
+    btn.classList.toggle('paused', isPaused);
+    btn.textContent = isPlaying ? '⏸ Pausa' : '▶ Play';
+  });
+}
+
+function loadVoices() {
+  if (!('speechSynthesis' in window)) return [];
+  availableVoices = window.speechSynthesis.getVoices() || [];
+  const best = chooseGoogleItalianVoice();
+  selectedVoiceURI = best ? best.voiceURI : '';
+  return availableVoices;
+}
+
+function chooseGoogleItalianVoice() {
+  const italian = availableVoices.filter(v => (v.lang || '').toLowerCase().startsWith('it'));
+  if (!italian.length) return null;
+  const googleIt = italian.find(v => (v.name || '').toLowerCase().includes('google') && (v.lang || '').toLowerCase() === 'it-it')
+    || italian.find(v => (v.name || '').toLowerCase().includes('google'));
+  return googleIt || italian.find(v => (v.lang || '').toLowerCase() === 'it-it') || italian[0];
+}
+
+function getSelectedVoice() {
+  if (!availableVoices.length) loadVoices();
+  return availableVoices.find(v => v.voiceURI === selectedVoiceURI) || chooseGoogleItalianVoice();
+}
+
+function speakText(text, label = 'testo', key = '') {
+  if (!('speechSynthesis' in window)) {
+    setAudioStatus('Lettura vocale non supportata. Prova Chrome o Safari.');
+    return;
+  }
+  const cleaned = cleanTextForAudio(text);
+  if (!cleaned) {
+    setAudioStatus('Nessun testo da leggere.');
+    return;
+  }
+
+  loadVoices();
+  window.speechSynthesis.cancel();
+
+  currentAudioText = cleaned;
+  currentAudioLabel = label;
+  currentAudioKey = key || label;
+  currentUtterance = new SpeechSynthesisUtterance(cleaned);
+  currentUtterance.lang = 'it-IT';
+  const voice = getSelectedVoice();
+  if (voice) currentUtterance.voice = voice;
+  currentUtterance.rate = audioRate;
+  currentUtterance.pitch = audioPitch;
+  currentUtterance.volume = 1;
+  currentUtterance.onstart = () => {
+    setAudioStatus('In lettura: ' + label);
+    updateAudioButtons('playing');
+  };
+  currentUtterance.onend = () => {
+    setAudioStatus('Lettura completata.');
+    updateAudioButtons('idle');
+  };
+  currentUtterance.onerror = () => {
+    setAudioStatus('Lettura interrotta. Premi Play.');
+    updateAudioButtons('idle');
+  };
+  window.speechSynthesis.speak(currentUtterance);
+}
+
+function toggleAudio(text, label = 'testo', key = '') {
+  if (!('speechSynthesis' in window)) return;
+  const effectiveKey = key || label;
+
+  if (window.speechSynthesis.speaking && !window.speechSynthesis.paused && currentAudioKey === effectiveKey) {
+    window.speechSynthesis.pause();
+    setAudioStatus('In pausa.');
+    updateAudioButtons('paused');
+    return;
+  }
+
+  if (window.speechSynthesis.paused && currentAudioKey === effectiveKey) {
+    window.speechSynthesis.resume();
+    setAudioStatus('Ripresa: ' + currentAudioLabel);
+    updateAudioButtons('playing');
+    return;
+  }
+
+  speakText(text, label, effectiveKey);
+}
+
+function toggleCurrentSectionAudio() {
+  const active = document.querySelector('.section.active');
+  const title = active ? (active.querySelector('.section-intro')?.textContent || 'sezione') : 'sezione';
+  const key = active ? 'section-' + active.id : 'section';
+  toggleAudio(getReadableTextFromElement(active), title, key);
+}
+
+function stopAudio() {
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  updateAudioButtons('idle');
+}
+
+function buildAudioMini() {
+  return `
+    <div class="audio-mini" data-no-audio="true">
+      <div class="audio-mini-text">
+        <div class="audio-mini-title">Audio</div>
+        <div class="audio-status" aria-live="polite">Voce Google italiana, lenta.</div>
+      </div>
+      <button class="audio-toggle" type="button" onclick="toggleCurrentSectionAudio()">▶ Play</button>
+    </div>`;
+}
+
+function initAudioNotes() {
+  document.querySelectorAll('.audio-panel').forEach(el => el.remove());
+  document.querySelectorAll('.section').forEach(section => {
+    if (!section.querySelector('.audio-mini')) {
+      section.insertAdjacentHTML('afterbegin', buildAudioMini());
+    }
+  });
+  document.querySelectorAll('.card').forEach((card, idx) => {
+    if (!card.querySelector('.listen-card')) {
+      const title = card.querySelector('h2')?.textContent?.trim() || `Scheda ${idx + 1}`;
+      const safeTitle = title.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      card.insertAdjacentHTML('afterbegin', `<button class="listen-card" type="button" onclick="toggleAudio(getReadableTextFromElement(this.closest('.card')), '${safeTitle}', 'card-${idx}')">▶ Play</button>`);
+    }
+  });
+  loadVoices();
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    setTimeout(loadVoices, 300);
+    setTimeout(loadVoices, 1000);
+  }
+  if (!audioVisibilityListenerAdded) {
+    audioVisibilityListenerAdded = true;
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+        setAudioStatus('Nota: alcuni telefoni possono sospendere l’audio con schermo bloccato.');
+      }
+    });
+  }
+}
+
+window.addEventListener('beforeunload', stopAudio);
+window.addEventListener('DOMContentLoaded', initAudioNotes);
+
 // Init quiz
 renderQ();
+initAudioNotes();
 </script>
 </body>
 </html>
